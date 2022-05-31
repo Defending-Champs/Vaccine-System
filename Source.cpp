@@ -78,7 +78,7 @@ void SuperAdmin::CRUD_Menu()
 			{
 				case 1: // Admin
 				{
-					//is ma kuch is tarhan ka krna hy ky  WritingPerson() ky function sy hi Admin ki aledha class banay 
+					//is ma kuch is tarhan ka krna hy ky  WritingPerson() ky function sy hi Admin ki aledha file banay 
 					break;
 				}
 				case 2: // Doctor
