@@ -58,29 +58,97 @@ void Person::Setter_Person()
 // -------------------------------next class-----------------------------------------(ignore)
 class SuperAdmin : public Person
 {
-	
+public:
+	void CRUD_Menu();
 };
-class Admin
+
+void SuperAdmin::CRUD_Menu()
+{
+	int choice;
+	cout << "\t\tCRUD MENU\nPress 1 to create : \nPress 2 to retrieve : \nPress 3 to update : \nPress 4 to Delete : \n";
+	cin >> choice;
+	switch (choice)
+	{
+		case 1: // Create
+		{
+			system("cls");
+			cout << "Press 1 to add Admin : \nPress 2 to add Doctor : \nPress 3 to add Front Desk Officer : \nPress 4 to add Government Official : \nPress 5 to add Citizen : \n";
+			cin >> choice;
+			switch (choice)
+			{
+				case 1: // Admin
+				{
+					//is ma kuch is tarhan ka krna hy ky  WritingPerson() ky function sy hi Admin ki aledha class banay 
+					break;
+				}
+				case 2: // Doctor
+				{
+					// aisy hi bakio ka
+					break;
+				}
+				case 3: // FDO
+				{
+					break;
+				}
+				case 4: // Government official
+				{
+					break;
+				}
+				case 5: // Citizen
+				{
+					break;
+				}
+				default:
+				{
+					cout << "Wrong INPUT"; // Change the sentence if you want to, @AffanBukhari--
+					break;
+				}
+			}
+			break;
+		}
+		case 2: // Retrieve
+		{
+			break;
+		}
+		case 3: // Update
+		{
+			break;
+		}
+		case 4: // Delete
+		{
+			break;
+		}
+		default: 
+		{
+			cout << "Wrong INPUT"; // Change the sentence if you want to, @AffanBukhari--
+		}
+	}
+}
+
+
+// -------------------------------next class-----------------------------------------(ignore)
+class Admin : public Person
 {
 
 };
-class Doctor
+class Doctor : public Person
 {
 
 };
-class FDO
+class FDO : public Person
 {
 
 };
-class GovernmentOfficial
+class GovernmentOfficial : public Person
 {
 
 };
-class Citizen
+class Citizen : public Person
 {
 
 };
 int main()
 {
-	
+	// Baraye meharbani project shuru kr lain 
+	//aur ma kal test deny nahi ja raha(siraf project ki waja sy) to suba 8 bjy google classroom py project shru krna hy.(pooch nahi raha bata raha hun)
 }
