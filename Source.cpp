@@ -3,7 +3,7 @@
 #include<ctime>
 #include<fstream>
 using namespace std;
-static int fileCount;
+static int fileCount, citizenCount;
 
 // ------------------------------------------FILE HAND-----------------
 class FileHand
@@ -11,7 +11,8 @@ class FileHand
 	friend class Person;
 public:
 	void WritingPerson(string Fname, string Lname, string email, string Cnum, int ID);
-
+	void WritingCitizen(string Fname, string Lname, string Cnum, string email, char pass[100], string cnic, string bloodType, string city, string state, string address, string dob, int age, bool eligibilityCheck);
+	
 };
 
 // ------------------------------------------PERSON-----------------
@@ -23,6 +24,13 @@ protected:
 	void Setter_Person();
 public:
 	Person();
+};
+
+// ------------------------------------------SUPER ADMIN-----------------
+class SuperAdmin : public Person
+{
+public:
+	void CRUD_Menu();
 };
 
 // ------------------------------------------ADMIN-----------------
@@ -52,7 +60,13 @@ class GovernmentOfficial : public Person
 // ------------------------------------------CITIZEN-----------------
 class Citizen : public Person
 {
-
+protected:
+	int b_Pressure, o_Level, g_level, age, allergy;
+	string fName, lName, number, cnic, eMail, bloodType, city, state, address, dob;
+	char pass[100];
+	bool eligibilityCheck;
+public:
+	void SignUp_Citizen();
 };
 
 //------------------------------------------FILE HAND-----------------
@@ -61,7 +75,27 @@ void FileHand::WritingPerson(string Fname, string Lname, string email, string Cn
 	fstream MyFile("Person_info.txt");
 	fileCount++;
 
-	MyFile << "\n\nRecord # " << fileCount << "\nName : " << Fname << " " << Lname << "\nEmail id : " << email << "\nContact Number : " << Cnum << "ID : " << ID;
+	MyFile << "\n\nRecord # " << fileCount << "\nName : " << Fname << " " << Lname << "\nEmail id : " << email << "\nContact Number : " << Cnum << "\nID : " << ID;
+
+	MyFile.close();
+}
+void FileHand::WritingCitizen(string Fname, string Lname, string Cnum, string email, char pass[100], string cnic, string bloodType, string city, string state, string address, string dob, int age, bool eligibilityCheck)
+{
+	fstream MyFile("Citizen_info.txt");
+	citizenCount++;
+	// encrypting password
+	for (int i = 0; (i < 100 && pass[i] != '\0'); i++)
+	{
+		pass[i] = pass[i] + 2; //the key for encryption is 3 that is added to ASCII value
+	}
+
+	// this is how to decrypt it
+	//for (int i = 0; (i < 100 && pass[i] != '\0'); i++)
+	//{
+	//	pass[i] = pass[i] - 2; //the key for encryption is 3 that is subtracted to ASCII value
+	//}
+
+	MyFile << "\n\nRecord # " << citizenCount << "\nName : " << Fname << " " << Lname << "\nAge : " << age << "\nEmail id : " << email << "\nPassword : " << pass << "\nContact Number : " << Cnum << "\nCnic : " << cnic << "\nBlood Type : " << bloodType << "\nCity : " << city << "\nState : " << state << "\nAddress : " << address << "\nDate of birth : " << dob << "\nEligibility check : " << eligibilityCheck;
 
 	MyFile.close();
 }
@@ -88,14 +122,7 @@ void Person::Setter_Person()
 	obj.WritingPerson(firstName, lastName, email, contactNumber, ID);
 }
 
-
 // ------------------------------------------SUPER ADMIN-----------------
-class SuperAdmin : public Person
-{
-public:
-	void CRUD_Menu();
-};
-
 void SuperAdmin::CRUD_Menu()
 {
 	int choice;
@@ -159,8 +186,63 @@ void SuperAdmin::CRUD_Menu()
 	}
 }
 
+// ------------------------------------------CITIZEN-----------------
+void Citizen::SignUp_Citizen()
+{
+	cout << "\t\t\tSIGNUP\n";
+	cout << "Enter First Name : ";
+	cin >> fName;
+	cout << "Enter last Name : ";
+	cin >> lName;
+	cout << "Enter your age : ";
+	cin >> age;
+	cout << "Enter Contact Number : ";
+	cin >> number;
+	cout << "Enter Email id : ";
+	cin >> eMail;
+	cout << "Enter Password : ";
+	cin >> pass;
+	cout << "Enter Cnic Number: ";
+	cin >> cnic;
+	cout << "Enter Blood type : ";
+	cin >> bloodType;
+	cout << "Enter City : ";
+	cin >> city;
+	cout << "Enter State : ";
+	cin >> state;
+	cout << "Enter Address : ";
+	cin >> address;
+	cout << "Enter Date of Birth : ";
+	cin >> dob;
+	cout << "These are the components of vaccine if you are not allergic to any of these press 1 else press 0";
+	cin >> allergy;
+	if (allergy == 1)
+	{
+		eligibilityCheck = true;
+		if (age >= 5)
+		{
+			eligibilityCheck = true;
+		}
+		else
+		{
+			eligibilityCheck = false;
+		}
+	}
+	else
+	{
+		eligibilityCheck = false;
+	}
+	
+	FileHand obj;
+	obj.WritingCitizen(fName, lName, number, eMail, pass, cnic, bloodType, city, state, address, dob, age, eligibilityCheck);
 
-// ------------------------------------------NEXT-----------------
+	cout << "You have successfully signed up";
+	if (eligibilityCheck == false)
+	{
+		cout << "\nBut you are not eligible for vaccination";
+	}
+}
+
 
 int main()
 {
