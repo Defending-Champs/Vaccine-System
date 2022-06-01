@@ -4,6 +4,8 @@
 #include<fstream>
 using namespace std;
 static int fileCount;
+
+// ------------------------------------------FILE HAND-----------------
 class FileHand
 {
 	friend class Person;
@@ -12,6 +14,48 @@ public:
 
 };
 
+// ------------------------------------------PERSON-----------------
+class Person
+{
+protected:
+	string firstName, lastName, email, contactNumber;
+	int ID;
+	void Setter_Person();
+public:
+	Person();
+};
+
+// ------------------------------------------ADMIN-----------------
+class Admin : public Person
+{
+
+};
+
+// ------------------------------------------DOCTOR-----------------
+class Doctor : public Person
+{
+
+};
+
+// ------------------------------------------FDO-----------------
+class FDO : public Person
+{
+
+};
+
+// ------------------------------------------Government Official-----------------
+class GovernmentOfficial : public Person
+{
+
+};
+
+// ------------------------------------------CITIZEN-----------------
+class Citizen : public Person
+{
+
+};
+
+//------------------------------------------FILE HAND-----------------
 void FileHand::WritingPerson(string Fname, string Lname, string email, string Cnum, int ID)
 {
 	fstream MyFile("Person_info.txt");
@@ -23,17 +67,7 @@ void FileHand::WritingPerson(string Fname, string Lname, string email, string Cn
 }
 
 
-// -------------------------------next class-----------------------------------------(ignore)
-class Person
-{
-protected:
-	string firstName, lastName, email, contactNumber;
-	int ID;
-	void Setter_Person();
-public:
-	Person();
-};
-
+// ------------------------------------------PERSON-----------------
 Person::Person()
 {
 	ID = NULL;
@@ -55,7 +89,7 @@ void Person::Setter_Person()
 }
 
 
-// -------------------------------next class-----------------------------------------(ignore)
+// ------------------------------------------SUPER ADMIN-----------------
 class SuperAdmin : public Person
 {
 public:
@@ -126,29 +160,9 @@ void SuperAdmin::CRUD_Menu()
 }
 
 
-// -------------------------------next class-----------------------------------------(ignore)
-class Admin : public Person
-{
+// ------------------------------------------NEXT-----------------
 
-};
-class Doctor : public Person
-{
-
-};
-class FDO : public Person
-{
-
-};
-class GovernmentOfficial : public Person
-{
-
-};
-class Citizen : public Person
-{
-
-};
 int main()
 {
-	// Baraye meharbani project shuru kr lain 
-	//aur ma kal test deny nahi ja raha(siraf project ki waja sy) to suba 8 bjy google classroom py project shru krna hy.(pooch nahi raha bata raha hun)
+	
 }
