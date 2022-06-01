@@ -72,7 +72,7 @@ public:
 //------------------------------------------FILE HAND-----------------
 void FileHand::WritingPerson(string Fname, string Lname, string email, string Cnum, int ID)
 {
-	fstream MyFile("Person_info.txt");
+	fstream MyFile("Person_info.txt", ios_base::app);
 	fileCount++;
 
 	MyFile << "\n\nRecord # " << fileCount << "\nName : " << Fname << " " << Lname << "\nEmail id : " << email << "\nContact Number : " << Cnum << "\nID : " << ID;
@@ -81,7 +81,7 @@ void FileHand::WritingPerson(string Fname, string Lname, string email, string Cn
 }
 void FileHand::WritingCitizen(string Fname, string Lname, string Cnum, string email, char pass[100], string cnic, string bloodType, string city, string state, string address, string dob, int age, bool eligibilityCheck)
 {
-	fstream MyFile("Citizen_info.txt");
+	fstream MyFile("Citizen_info.txt", ios_base::app);
 	citizenCount++;
 	// encrypting password
 	for (int i = 0; (i < 100 && pass[i] != '\0'); i++)
