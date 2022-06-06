@@ -1,0 +1,316 @@
+//Enter the part in header source file
+
+
+#pragma once
+#include<iostream>
+#include<cstdlib>
+#include<ctime>
+#include<string>
+#include<fstream>
+using namespace std;
+
+//--------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------CLASSES-----------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+
+
+//--------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------PERSON----------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+
+
+
+class Person
+{
+	friend class FileHandling;
+protected:
+	string firstName, lastName, email, contactNumber;
+	int ID;
+public:
+	virtual void Set();
+};
+
+
+
+//--------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------SUPER_ADMIN-----------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+
+
+
+class SuperAdmin : public Person
+{
+	friend class FileHandling;
+public:
+	void Set();
+	void CRUD_Menu();
+};
+
+
+
+//--------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------ADMIN----------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+
+
+
+class Admin : public Person
+{
+	friend class FileHandling;
+public:
+	void Set();
+};
+
+
+
+
+
+
+//--------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------SUPPLIER--------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+
+
+
+class Supplier : public Person
+{
+	friend class FileHandling;
+public:
+	void Set();
+};
+
+
+
+//--------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------MANUFACTURER-----------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+
+
+
+class Manufacturer : public Person
+{
+	friend class FileHandling;
+public:
+	void Set();
+};
+
+
+
+//--------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------VENDOR--------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+
+
+
+class Vendor : public Person
+{
+	friend class FileHandling;
+public:
+	void Set();
+};
+
+
+
+//--------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------CITIZEN---------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+
+
+
+class Citizen : public Person
+{
+	friend class FileHandling;
+protected:
+	int systolic_Pressure, dystolic_Pressure, o_Level, g_Level, allergy, age;
+	string bloodType, city, state, address, dob, CNIC;
+	char pass[100];
+	bool eligibilityCheck;
+	int numberofDosesTaken;
+public:
+	void SignUp_Citizen();
+};
+
+
+
+//--------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------MD_DOCTOR---------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+
+
+
+class MD_Doctor : public Person,virtual public Citizen
+{
+	friend class FileHandling;
+public:
+	void Set();
+	void SetData();
+
+};
+
+
+
+//--------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------VACCINES--------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+
+
+
+class Vaccines : public Supplier
+{
+	friend class FileHandling;
+protected:
+	string vacType, vacName;
+	int vacID, NumberOfDoses, price, BatchID, BatchVacID;
+	int quantity;
+public:
+	void setVacData();
+};
+
+
+
+//--------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------WAREHOUSES------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+
+
+
+class Warehouses : public Supplier
+{
+	friend class FileHandling;
+protected:
+	string name;
+	float longi, latti;
+	char Lon, Lat;
+	int capacity;
+	int SupplierID;
+	Vaccines* VacType;
+	int* Vac;
+	int num, Total;
+public:
+	void WareSet();
+};
+
+
+
+//--------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------VACCINATION_CENTRES---------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+
+
+
+class VaccinationCentres : public Vaccines, public Warehouses
+{
+	friend class FileHandling;
+protected:
+	int VaccineID;
+	int day, month, year;
+	string Company, City;
+	int amount, quantity, population, numberOfcenters;
+public:
+	void setBatchData();
+};
+
+
+
+//--------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------GOVERNMENT_OFFICIAL--------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+
+
+
+class GovernmentOfficial : public VaccinationCentres,virtual public Warehouses
+{
+	friend class FileHandling;
+public:
+	float PercentageTotalvaccinated;
+	float PerPartiallyVaccinated, PerFullyVaccinated, PerBoosterVaccinated;
+	int AmountSpentTotal;
+	int vacUsed_perType[6];
+
+
+	void DisplayGraph();
+	void CalculateData();
+};
+
+
+
+//--------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------FDO-----------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+
+
+
+class FDO : public MD_Doctor
+{
+	friend class FileHandling;
+protected:
+	int* Counters;
+public:
+	void Set();
+	bool check_Eligibility();
+};
+
+
+
+//--------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------DOCTOR---------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+
+
+
+class Doctor : public Person
+{
+	friend class FileHandling;
+protected:
+	int Duty_days;
+public:
+	void Set();
+};
+
+
+
+//--------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------FILE_HANDLING----------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+
+
+
+class FileHandling
+{
+	friend class Doctor;
+	friend class MD_doctor;
+	friend class Vaccines;
+	friend class SuperAdmin;
+	friend class Admin;
+	friend class Manufacturer;
+	friend class Supplier;
+	friend class Vendor;
+	friend class Citizen;
+	friend class Warehouses;
+	friend class VaccinationCenters;
+	friend class GovernmentOfficial;
+	friend class FDO;
+protected:
+	fstream admin, s_Admin, manuFacturer, supplier, vendor, doctor, md_doctor ,fDOs, citizen, vaccinesTypes, vaccinationCenteres, govtOfficial, w_houses, vacData;
+public:
+	FileHandling();
+	~FileHandling();
+	void StoreDoctor(Doctor&);
+	void StoreMD_Doctor(MD_Doctor&);
+	void StoreFDO(FDO&);
+	void StoreSuperAdmin(SuperAdmin&);
+	void StoreAdmin(Admin&);
+	void StoreManufacturer(Manufacturer&);
+	void StoreVendor(Vendor&);
+	void StoreSupplier(Supplier&);
+	void StoreCitizen(Citizen&);
+	void StoreVaccineData(Vaccines&);
+	void StoreVaccinationCentres(VaccinationCentres&);
+	void StoreWarehouses(Warehouses&);
+	void StoreGovernmentOfficial(GovernmentOfficial&);
+};
+
+
+
