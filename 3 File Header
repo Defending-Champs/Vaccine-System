@@ -1,6 +1,3 @@
-//Enter the part in header source file
-
-
 #pragma once
 #include<iostream>
 #include<cstdlib>
@@ -124,8 +121,8 @@ class Citizen : public Person
 	friend class FileHandling;
 protected:
 	int systolic_Pressure, dystolic_Pressure, o_Level, g_Level, allergy, age;
-	string bloodType, city, state, address, dob, CNIC;
-	char pass[100];
+	string bloodType, city, state, address, dob;
+	string CNIC, pass;
 	bool eligibilityCheck;
 	int numberofDosesTaken;
 public:
@@ -279,6 +276,7 @@ public:
 
 class FileHandling
 {
+	friend class Person;
 	friend class Doctor;
 	friend class MD_doctor;
 	friend class Vaccines;
@@ -293,10 +291,12 @@ class FileHandling
 	friend class GovernmentOfficial;
 	friend class FDO;
 protected:
-	fstream admin, s_Admin, manuFacturer, supplier, vendor, doctor, md_doctor ,fDOs, citizen, vaccinesTypes, vaccinationCenteres, govtOfficial, w_houses, vacData;
+	fstream IDs, CNICs, E_mails, admin, s_Admin, manuFacturer, supplier, vendor, doctor, md_doctor, fDOs, citizen, vaccinesTypes, vaccinationCenteres, govtOfficial, w_houses, vacData;
 public:
 	FileHandling();
-	~FileHandling();
+	void StoreCNICs(string);
+	void StoreIDs(int);
+	void StoreE_mails(string);
 	void StoreDoctor(Doctor&);
 	void StoreMD_Doctor(MD_Doctor&);
 	void StoreFDO(FDO&);
@@ -310,6 +310,7 @@ public:
 	void StoreVaccinationCentres(VaccinationCentres&);
 	void StoreWarehouses(Warehouses&);
 	void StoreGovernmentOfficial(GovernmentOfficial&);
+	~FileHandling();
 };
 
 
