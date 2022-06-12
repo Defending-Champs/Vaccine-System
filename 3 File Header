@@ -6,6 +6,7 @@
 #include<fstream>
 using namespace std;
 
+
 //--------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------CLASSES-----------------------------------------------------------
@@ -23,8 +24,9 @@ class Person
 {
 	friend class FileHandling;
 protected:
-	string firstName, lastName, email, contactNumber;
-	int ID;
+	char firstName[30], lastName[30];
+	string email, contactNumber;
+	int iD;
 public:
 	virtual void Set();
 };
@@ -121,8 +123,9 @@ class Citizen : public Person
 	friend class FileHandling;
 protected:
 	int systolic_Pressure, dystolic_Pressure, o_Level, g_Level, allergy, age;
-	string bloodType, city, state, address, dob;
-	string CNIC, pass;
+	string bloodType, city, state, dob;
+	char address[100];
+	string cNIC, pass;
 	bool eligibilityCheck;
 	int numberofDosesTaken;
 public:
@@ -137,7 +140,7 @@ public:
 
 
 
-class MD_Doctor : public Person,virtual public Citizen
+class MD_Doctor : public Person, virtual public Citizen
 {
 	friend class FileHandling;
 public:
@@ -159,7 +162,7 @@ class Vaccines : public Supplier
 	friend class FileHandling;
 protected:
 	string vacType, vacName;
-	int vacID, NumberOfDoses, price, BatchID, BatchVacID;
+	int vacID, numberOfDoses, price, batchID, batchVacID;
 	int quantity;
 public:
 	void setVacData();
@@ -177,13 +180,13 @@ class Warehouses : public Supplier
 {
 	friend class FileHandling;
 protected:
-	string name;
+	char name[30];
 	float longi, latti;
-	char Lon, Lat;
+	char lon, lat;
 	int capacity;
-	int SupplierID;
-	Vaccines* VacType;
-	int* Vac;
+	int supplierID;
+	Vaccines* vacType;
+	int* vac;
 	int num, Total;
 public:
 	void WareSet();
@@ -201,9 +204,9 @@ class VaccinationCentres : public Vaccines, public Warehouses
 {
 	friend class FileHandling;
 protected:
-	int VaccineID;
+	int vaccineID;
 	int day, month, year;
-	string Company, City;
+	string company, city;
 	int amount, quantity, population, numberOfcenters;
 public:
 	void setBatchData();
@@ -217,13 +220,13 @@ public:
 
 
 
-class GovernmentOfficial : public VaccinationCentres,virtual public Warehouses
+class GovernmentOfficial : public VaccinationCentres, virtual public Warehouses
 {
 	friend class FileHandling;
 public:
-	float PercentageTotalvaccinated;
-	float PerPartiallyVaccinated, PerFullyVaccinated, PerBoosterVaccinated;
-	int AmountSpentTotal;
+	float percentageTotalvaccinated;
+	float perPartiallyVaccinated, perFullyVaccinated, perBoosterVaccinated;
+	int amountSpentTotal;
 	int vacUsed_perType[6];
 
 
@@ -243,7 +246,7 @@ class FDO : public MD_Doctor
 {
 	friend class FileHandling;
 protected:
-	int* Counters;
+	int* counters;
 public:
 	void Set();
 	bool check_Eligibility();
@@ -261,7 +264,7 @@ class Doctor : public Person
 {
 	friend class FileHandling;
 protected:
-	int Duty_days;
+	int duty_days;
 public:
 	void Set();
 };
@@ -291,7 +294,7 @@ class FileHandling
 	friend class GovernmentOfficial;
 	friend class FDO;
 protected:
-	fstream IDs, CNICs, E_mails, admin, s_Admin, manuFacturer, supplier, vendor, doctor, md_doctor, fDOs, citizen, vaccinesTypes, vaccinationCenteres, govtOfficial, w_houses, vacData;
+	fstream iDs, cNICs, e_mails, admin, s_Admin, manuFacturer, supplier, vendor, doctor, md_doctor, fDOs, citizen, vaccinesTypes, vaccinationCenteres, govtOfficial, w_houses, vacData;
 public:
 	FileHandling();
 	void StoreCNICs(string);
