@@ -12,7 +12,7 @@ using namespace std;
 //-------------------------------------------------IMPLEMENTATION-----------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------
-
+GovernmentOfficial G_obj;
 
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -25,28 +25,28 @@ void Person::Set()
 {
 	FileHandling obj;
 	cout << "Enter First Name : ";
-	cin.getline(firstName, 30);
+	cin >> firstName;
 	cout << "Enter last Name : ";
-	cin.getline(lastName, 30);
+	cin >> lastName;
 	cout << "Enter Email id : ";
 	cin >> email;
 	bool Equal = true;
 	while (Equal != false)
 	{
-		obj.e_mails.close();
-		obj.e_mails.open("E-Mails.txt", ios::in);
+		obj.E_mails.close();
+		obj.E_mails.open("E-Mails.txt", ios::in);
 		int count = 0;
-		while (!obj.e_mails.eof())
+		while (!obj.E_mails.eof())
 		{
 			string temp;
-			getline(obj.e_mails, temp);
+			getline(obj.E_mails, temp);
 			if (email == temp)
 			{
 				cout << "User Id already exist!\nEnter valid user E-Mail : \n";
 				cin >> email;
 				break;
 			}
-			if (obj.e_mails.eof())
+			if (obj.E_mails.eof())
 			{
 				Equal = false;
 			}
@@ -56,32 +56,32 @@ void Person::Set()
 	cout << "Enter Contact Number : ";
 	cin >> contactNumber;
 	srand(time(NULL));
-	iD = rand() % 9000 + 1000;
-	cout << "Randomly generated 4 digit ID : " << iD << endl;
+	ID = rand() % 9000 + 1000;
+	cout << "Randomly generated 4 digit ID : " << ID << endl;
 	Equal = true;
 	while (Equal != false)
 	{
-		obj.iDs.close();
-		obj.iDs.open("IDs.txt", ios::in);
+		obj.IDs.close();
+		obj.IDs.open("IDs.txt", ios::in);
 		int count = 0;
-		while (!obj.iDs.eof())
+		while (!obj.IDs.eof())
 		{
 			int num;
-			obj.iDs >> num;
-			if (iD == num)
+			obj.IDs >> num;
+			if (ID == num)
 			{
 				cout << "User Id already exist!\nAgain generating a random ID : \n";
 				srand(time(NULL));
-				iD = rand() % 9000 + 1000;
+				ID = rand() % 9000 + 1000;
 				break;
 			}
-			if (obj.iDs.eof())
+			if (obj.IDs.eof())
 			{
 				Equal = false;
 			}
 		}
 	}
-	obj.StoreIDs(iD);
+	obj.StoreIDs(ID);
 }
 
 
@@ -130,11 +130,17 @@ void Doctor::Set()
 	cout << "Enter information of Doctor : \n";
 	Person::Set();
 	cout << "Enter number of duty Days : ";
-	cin >> duty_days;
+	cin >> Duty_days;
 	FileHandling obj;
 	obj.StoreDoctor(*this);
-	SuperAdmin S_A;
-	S_A.CRUD_Menu();
+	char x;
+	cout << "Enter 1 for again going to CRUD menu : ";
+	cin >> x;
+	if (x == 1)
+	{
+		SuperAdmin S_A;
+		S_A.CRUD_Menu();
+	}
 }
 
 
@@ -154,30 +160,36 @@ void FDO::Set()
 	int num, CounterNum = 1;
 	cout << "Enter the number of counters : ";
 	cin >> num;
-	counters = new int[num];
+	Counters = new int[num];
 	cout << "Enter number of poeple on all counters : ";
 	for (int i = 0; i < num; ++i)
 	{
 		cout << "For counter " << i + 1 << " : \n";
-		cin >> counters[i];
-		while (counters[i] < 0)
+		cin >> Counters[i];
+		while (Counters[i] < 0)
 		{
 			cout << "Invalid number : \nEnter again : ";
-			cin >> counters[i];
+			cin >> Counters[i];
 		}
 	}
-	int smallest = counters[0];
+	int smallest = Counters[0];
 	for (int i = 1; i < num; i++)
 	{
-		if (counters[i] < smallest)
+		if (Counters[i] < smallest)
 		{
-			smallest = counters[i];
+			smallest = Counters[i];
 			CounterNum = i + 1;
 		}
 	}
 	cout << "Patient please go to the counter number : " << CounterNum << " ,because it has least number of people i.e : " << smallest << " \n";
-	SuperAdmin S_A;
-	S_A.CRUD_Menu();
+	char x;
+	cout << "Enter 1 for again going to CRUD menu : ";
+	cin >> x;
+	if (x == 1)
+	{
+		SuperAdmin S_A;
+		S_A.CRUD_Menu();
+	}
 }
 
 
@@ -239,12 +251,50 @@ void Admin::Set()
 	Person::Set();
 	FileHandling obj;
 	obj.StoreAdmin(*this);
-
-	//process
-	SuperAdmin S_A;
-	S_A.CRUD_Menu();
+	char x;
 }
 
+
+void Admin::Vac()
+{
+	int x;
+	FileHandling obj;
+	int num;
+	cout << "Enter 1 to add vaccines : ";
+	cin >> num;
+	if (num == 1)
+	{
+		cout << "How many types of vaccine you want to add?";
+		cin >> x;
+		vac_stat = new char[x];
+		vaccines = new Vaccines[x];
+		suppliers = new Supplier[x];
+		cout << "Enter vaccine information : ";
+		for (int i = 0; i < x; i++)
+		{
+			cout << "For vaccine " << i + 1 << " : \n";
+			cout << "First enter the data of supplier : \n";
+			suppliers[i].Set();
+			cout << "Enter information of vaccine : \n";
+			vaccines[i].setVacData();
+			cout << "Enter 1 for local vaccine\nEnter 2 for international vaccine\n";
+			cin >> vac_stat[i];
+		}
+		//---
+		Warehouses war;
+		system("cls");
+		cout << "PUTTING VACCINES IN WAREHOUSE \n";
+		war.WareSet(x);
+		system("cls");
+		cout << "Establishing vaccination center \n";
+		VaccinationCentres vc;
+		vc.setBatchData();
+	}
+	else
+	{
+		cout << "Invalid";
+	}
+}
 
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -300,7 +350,7 @@ void Vendor::Set()
 
 void GovernmentOfficial::CalculateData()
 {
-	percentageTotalvaccinated = perBoosterVaccinated + perFullyVaccinated + perPartiallyVaccinated;
+	PercentageTotalvaccinated = PerBoosterVaccinated + PerFullyVaccinated + PerPartiallyVaccinated;
 	//Aur bhi kuch karna hai is me but idea nhi hai kya karna
 }
 
@@ -311,6 +361,32 @@ void GovernmentOfficial::DisplayGraph()
 	cout << "\n\n\t\tDisplaying graph : \n\n";
 	//Ek pyara sa Graph display karna hai is me
 }
+
+
+
+void GovernmentOfficial::SetAllData(FileHandling& obj)
+{
+	obj.govtData.close();
+	obj.govtData.open("Govt Record.txt", ios::in);
+	obj.govtData >> PercentageTotalvaccinated;
+	obj.govtData >> PerPartiallyVaccinated;
+	obj.govtData >> PerFullyVaccinated;
+	obj.govtData >> PerBoosterVaccinated;
+	obj.govtData >> AmountSpentTotal;
+	for (int i = 0; i < 6; ++i)
+	{
+		obj.govtData >> vacUsed_perType[i];
+	}
+	/*G_obj.PercentageTotalvaccinated = PercentageTotalvaccinated;
+	G_obj.PerPartiallyVaccinated = PerPartiallyVaccinated;
+	G_obj.PerPartiallyVaccinated = PerFullyVaccinated;
+	G_obj.PerPartiallyVaccinated = PerBoosterVaccinated;
+	G_obj.PerPartiallyVaccinated = AmountSpentTotal;*/
+
+	obj.govtData.close();
+	obj.govtData.open("Govt Record.txt", ios::out);
+}
+
 
 
 
@@ -356,32 +432,32 @@ void Vaccines::setVacData()
 	if (x == '1')
 	{
 		vacName = "Pfizer-BioNTech";
-		numberOfDoses = 2;
+		NumberOfDoses = 2;
 	}
 	else if (x == '2')
 	{
 		vacName = "Moderna";
-		numberOfDoses = 2;
+		NumberOfDoses = 2;
 	}
 	else if (x == '3')
 	{
 		vacName = "PakVac";
-		numberOfDoses = 1;
+		NumberOfDoses = 1;
 	}
 	else if (x == '4')
 	{
 		vacName = "Sinopharm";
-		numberOfDoses = 2;
+		NumberOfDoses = 2;
 	}
 	else if (x == '5')
 	{
 		vacName = "CanSio Bio";
-		numberOfDoses = 1;
+		NumberOfDoses = 1;
 	}
 	else if (x == '6')
 	{
 		vacName = "Astrazeneca";
-		numberOfDoses = 2;
+		NumberOfDoses = 2;
 	}
 	srand(time(NULL));
 	vacID = rand() % 9000 + 1000;
@@ -389,7 +465,7 @@ void Vaccines::setVacData()
 	cout << "Enter its price : ";
 	cin >> price;
 	srand(time(NULL));
-	batchID = rand() % 9000 + 1000;
+	BatchID = rand() % 9000 + 1000;
 	cout << "A four digit BatchID is randomly generated\n";
 	FileHandling obj;
 	obj.StoreVaccineData(*this);
@@ -406,15 +482,10 @@ void Vaccines::setVacData()
 void VaccinationCentres::setBatchData()
 {
 	srand(time(NULL));
-	vaccineID = rand() % 9000 + 1000;
-	cout << "A four digit VaccineID is randomly generated\n";
+	BatchID = rand() % 9000 + 1000;
+	cout << "Random 4-Digit ID of vaccine batch is generated : ";
 	cout << "Enter Supplier ID : (4-Digit ID)";
-	cin >> supplierID;
-	//Condition
-	{
-		//yahan id ko file me paray huye suppliers ki ids se compare karen ge
-		//aur invalid par dobara input len ge
-	}
+	cin >> SupplierID;
 	cout << "Enter the Expiry date : \n";
 	cout << "Day : ";
 	cin >> day;
@@ -423,16 +494,12 @@ void VaccinationCentres::setBatchData()
 	cout << "Year : ";
 	cin >> year;
 	cout << "Enter the company name : ";
-	cin >> company;
+	cin >> Company;
 	cout << "Enter city name : ";
-	cin >> city;
-	cout << "Enter amount spent on vaccines : ";
-	cin >> amount;
-	cout << "Enter the quantity of vaccines : ";
-	cin >> quantity;
+	cin >> City;
 	cout << "Enter Population of the city : ";
 	cin >> population;
-	while (population >= 0)
+	while (population <= 0)
 	{
 		cout << "Invalid information\nInput Again : ";
 		cin >> population;
@@ -455,68 +522,65 @@ void VaccinationCentres::setBatchData()
 
 
 
-void Warehouses::WareSet()
+void Warehouses::WareSet(int N)
 {
 	int count;
 	cout << "Enter name of Warehouse : ";
-	cin.getline(name, 30);
+	cin >> name;
 	cout << "Enter location : \t";
 	cout << "lattitude : ";
 	cin >> latti;
 	cout << "Enter direction : (N,S)";
-	cin >> lat;
-	while (lat != 'N' && lat != 'S')
+	cin >> Lat;
+	while (Lat != 'N' && Lat != 'S')
 	{
 		cout << "Invalid Input!\nEnter Again : ";
-		cin >> lat;
+		cin >> Lat;
 	}
 	cout << "longitude : ";
 	cin >> longi;
 	cout << "Enter direction : (E,W)";
-	cin >> lon;
-	while (lon != 'E' && lon != 'W')
+	cin >> Lon;
+	while (Lon != 'E' && Lon != 'W')
 	{
 		cout << "Invalid Input!\nEnter Again : ";
-		cin >> lon;
+		cin >> Lon;
 	}
 	cout << "Enter capacity of warehouse : ";
 	cin >> capacity;
-	cout << "Enter the information of Supplier : ";
-	Supplier::Set();
-	supplierID = Supplier::iD;
 	cout << "How many Vaccines are supplied : \n";
 	cin >> num;
-	vacType = new Vaccines[num];
-	vac = new int[num];
+	VacType = new Vaccines[num];
+	Vac = new int[num];
 	cout << "Entering info of all " << num << " vaccines : \n";
-	for (int i = 0; i < num; ++i)
+	for (int i = 0; i < N; ++i)
 	{
 		count = i;
 		cout << "For Vaccine " << i + 1 << " : \n";
-		vacType[i].setVacData();
 		cout << "Enter Number of Vaccines of this type : ";
-		cin >> vac[i];
-		Total += vac[i];
+		cin >> Vac[i];
+		Total += Vac[i];
 		if (Total > capacity)
 		{
 			cout << "Exceeded the Entered Capacity of WareHouse : \n";
 			cout << "The remaining types(if any are set to zero)\n";
 			int Temp = Total - capacity;
-			Total = Total - vac[i];
-			vac[i] = vac[i] - Temp;
-			Total = Total + vac[i];
+			Total = Total - Vac[i];
+			Vac[i] = Vac[i] - Temp;
+			Total = Total + Vac[i];
 			if (i != num - 1)
 			{
 				for (int i = count; i < num; ++i)
 				{
-					vac[i] = 0;
+					Vac[i] = 0;
 				}
 			}
 			break;
 		}
 	}
 	cout << "Total of " << Total << " vaccines are Supplied To WareHouse\n";
-
+	FileHandling obj;
+	obj.StoreWarehouses(*this);
 }
 
 
@@ -543,7 +607,7 @@ void Citizen::SignUp_Citizen()
 	cout << "Enter State : ";
 	cin >> state;
 	cout << "Enter Address : ";
-	cin.getline(address, 20);
+	cin >> address;
 	cout << "Enter Date of Birth : ";
 	cin >> dob;
 	cout << "If you are not allergic to to any of vaccine components, press 1 else press 0";
@@ -566,29 +630,29 @@ void Citizen::SignUp_Citizen()
 	}
 
 	cout << "Enter Cnic Number (XXXXX-XXXXXXX-X) : ";
-	cin >> cNIC;
-	while (cNIC[5] != '-' || cNIC[13] != '-')
+	cin >> CNIC;
+	while (CNIC[5] != '-' || CNIC[13] != '-')
 	{
 		cout << "Invalid format!\nEnter in format (XXXXX-XXXXXXX-X) : ";
-		cin >> cNIC;
+		cin >> CNIC;
 	}
 	bool Equal = true;
 	while (Equal != false)
 	{
-		obj.cNICs.close();
-		obj.cNICs.open("CNICs.txt", ios::in);
+		obj.CNICs.close();
+		obj.CNICs.open("CNICs.txt", ios::in);
 		int count = 0;
-		while (!obj.cNICs.eof())
+		while (!obj.CNICs.eof())
 		{
 			string temp;
-			getline(obj.cNICs, temp);
-			if (cNIC == temp)
+			getline(obj.CNICs, temp);
+			if (CNIC == temp)
 			{
 				cout << "User Id already exist!\nEnter valid user CNIC : \n";
-				cin >> cNIC;
+				cin >> CNIC;
 				break;
 			}
-			if (obj.cNICs.eof())
+			if (obj.CNICs.eof())
 			{
 				Equal = false;
 			}
@@ -600,9 +664,85 @@ void Citizen::SignUp_Citizen()
 	{
 		cout << "\nBut you are not eligible for vaccination";
 	}
-	obj.cNICs.close();
-	obj.cNICs.open("CNICs.txt", ios::app);
-	obj.StoreCNICs(cNIC);
+	obj.CNICs.close();
+	obj.CNICs.open("CNICs.txt", ios::app);
+	obj.StoreCNICs(CNIC);
+}
+
+
+bool Citizen::SignIn()
+{
+	FileHandling obj;
+	string email, pass;
+	cout << "Enter Email ID : ";
+	cin >> email;
+	bool Equal = false;
+	while (Equal != true)
+	{
+		obj.E_mails.close();
+		obj.E_mails.open("E-Mails.txt", ios::in);
+		int count = 0;
+		while (!obj.E_mails.eof())
+		{
+			string temp;
+			getline(obj.E_mails, temp);
+			while (!obj.E_mails.eof())
+			{
+				if (email == temp)
+				{
+					cout << "User Id exist!\n";
+					break;
+				}
+			}
+			if (email == temp)
+			{
+				Equal = true;
+				break;
+			}
+			else if (obj.E_mails.eof())
+			{
+				Equal = false;
+				cout << "No user found!Enter a valid user ID : \n";
+				cin >> email;
+				break;
+			}
+		}
+	}
+	cout << "Enter Password : ";
+	cin >> pass;
+	Equal = false;
+	while (Equal != true)
+	{
+		obj.pass.close();
+		obj.pass.open("Pass.txt", ios::in);
+		int count = 0;
+		while (!obj.pass.eof())
+		{
+			string temp;
+			getline(obj.pass, temp);
+			while (!obj.pass.eof())
+			{
+				if (pass == temp)
+				{
+					cout << "User Id exist!\n";
+					break;
+				}
+			}
+			if (pass == temp)
+			{
+				Equal = true;
+				break;
+			}
+			else if (obj.pass.eof())
+			{
+				Equal = false;
+				cout << "Incorrect Password!Enter correct password : \n";
+				cin >> pass;
+				break;
+			}
+		}
+	}
+	return true;
 }
 
 
@@ -637,7 +777,7 @@ void SuperAdmin::CRUD_Menu()
 	case 1: // Create
 	{
 		system("cls");
-		cout << "Press 1 to add Admin : \nPress 2 to add Doctor : \nPress 3 to add Front Desk Officer : \nPress 4 to add Citizen : \n";
+		cout << "Press 1 to add Admin : \nPress 2 to add Doctor : \nPress 3 to add Front Desk Officer : \nPress 4 to add Citizen : \nAny other to go further\n";
 		cin >> choice;
 		while (choice > 4 || choice < 1)
 		{
@@ -650,7 +790,18 @@ void SuperAdmin::CRUD_Menu()
 		{
 			Admin obj;
 			obj.Set();
-			break;
+			char x;
+			cout << "Enter 1 for again going to CRUD menu : ";
+			cin >> x;
+			if (x == 1)
+			{
+				SuperAdmin S_A;
+				S_A.CRUD_Menu();
+			}
+			else
+			{
+				break;
+			}
 		}
 		case 2: // Doctor
 		{
@@ -670,54 +821,85 @@ void SuperAdmin::CRUD_Menu()
 			obj.SignUp_Citizen();
 			break;
 		}
+		default:
+			break;
 		}
 		break;
 	}
-	/*	case 2: // Retrieve
-		{
-			cout << "Press 1 for Admin : \nPress 2 for Doctor : \nPress 3 for Front Desk Officer : \nPress 4 for Citizen : \n";
-			cin >> choice;
-			while (choice > 4 || choice < 1)
-			{
-				cout << "Invalid Input!\nEnter again : ";
-				cin >> choice;
-			}
-			switch (choice)
-			{
-			case 1: // Admin
-			{
-				Admin obj;
-				obj.Set();
-				break;
-			}
-			case 2: // Doctor
-			{
-				Doctor obj;
-				obj.Set();
-				break;
-			}
-			case 3: // FDO
-			{
-				FDO obj;
-				obj.Set();
-				break;
-			}
-			case 4: // Citizen
-			{
-				Citizen obj;
-				obj.Set();
-				break;
-			}
-			break;
-		}
-		case 3: // Update
-		{
-			break;
-		}
-		case 4: // Delete
-		{
-			break;
-		}*/
+	//case 2: // Retrieve
+	//{
+	//	cout << "Press 1 for Vaccination Centeres Data : \nPress 2 for Doctor : \nPress 3 for Front Desk Officer : \nPress 4 for Citizen : \nPress 5 for WareHouses : \nPress 6 for Govt Official : \n";
+	//	cin >> choice;
+	//	while (choice > 5 || choice < 1)
+	//	{
+	//		cout << "Invalid Input!\nEnter again : ";
+	//		cin >> choice;
+	//	}
+	//	switch (choice)
+	//	{
+	//	case 1: // Vaccination Centeres
+	//	{
+	//		Admin obj;
+	//		FileHandling Fobj;
+	//		Fobj.admin.close();
+	//		Fobj.admin.open("Admins.txt", ios::in);
+	//		while (Fobj.admin!eof())
+	//		{
+	//			string ab;
+	//			getline(Fobj.admin, ab);
+	//			cout << ab << endl;
+	//		}
+	//		break;
+	//	}
+	//	case 2: // Doctor
+	//	{
+	//		Doctor obj;
+	//		FileHandling Fobj;
+	//		Fobj.doctor.close();
+	//		Fobj.doctor.open("Doctor.txt", ios::in);
+	//		while (Fobj.doctor!eof())
+	//		{
+	//			string ab;
+	//			getline(Fobj.doctor, ab);
+	//			cout << ab << endl;
+	//		}
+	//		break;
+	//	}
+	//	case 3: // FDO
+	//	{
+	//		FDO obj;
+	//		obj.Set();
+	//		break;
+	//	}
+	//	case 4: // Citizen
+	//	{
+	//		Citizen obj;
+	//		obj.Set();
+	//		break;
+	//	}
+	//	case 5: // Warehouses
+	//	{
+	//		Citizen obj;
+	//		obj.Set();
+	//		break;
+	//	}
+	//	case 6: // Govt Official
+	//	{
+	//		Citizen obj;
+	//		obj.Set();
+	//		break;
+	//	}
+	//	break;
+	//	}
+	//case 3: // Update
+	//{
+	//	break;
+	//}
+	//case 4: // Delete
+	//{
+	//	break;
+	//}
+	//}
 	}
 }
 
@@ -729,14 +911,14 @@ void SuperAdmin::CRUD_Menu()
 
 
 
-
 FileHandling::FileHandling()
 {
-	cNICs.open("CNICs.txt", ios::app);
-	iDs.open("IDs.txt", ios::app);
-	e_mails.open("E-Mails.txt", ios::app);
+	CNICs.open("CNICs.txt", ios::app);
+	IDs.open("IDs.txt", ios::app);
+	pass.open("Pass.txt", ios::app);
+	E_mails.open("E-Mails.txt", ios::app);
 	admin.open("Admins.txt", ios::app);
-	s_Admin.open("Super Admin.txt", ios::out);
+	s_Admin.open("Super Admin.txt", ios::app);
 	manuFacturer.open("Manufacturers.txt", ios::app);
 	supplier.open("Suppliers.txt", ios::app);
 	vendor.open("Vendors.txt", ios::app);
@@ -747,6 +929,7 @@ FileHandling::FileHandling()
 	vaccinesTypes.open("Vaccines Types.txt", ios::app);
 	vaccinationCenteres.open("Vaccination Centres.txt", ios::app);
 	govtOfficial.open("Government Officials.txt", ios::app);
+	govtData.open("Govt Record.txt", ios::app);
 	w_houses.open("WareHouses.txt", ios::app);
 	vacData.open("VAccines Data.txt", ios::app);
 }
@@ -755,7 +938,7 @@ FileHandling::FileHandling()
 
 void FileHandling::StoreCNICs(string s)
 {
-	cNICs << s << endl;
+	CNICs << s << endl;
 	cout << endl;
 }
 
@@ -763,7 +946,14 @@ void FileHandling::StoreCNICs(string s)
 
 void FileHandling::StoreIDs(int x)
 {
-	iDs << x << endl;
+	IDs << x << endl;
+	cout << endl;
+}
+
+
+void FileHandling::StorePass(string str)
+{
+	pass << str << endl;
 	cout << endl;
 }
 
@@ -771,7 +961,7 @@ void FileHandling::StoreIDs(int x)
 
 void FileHandling::StoreE_mails(string s)
 {
-	e_mails << s << endl;
+	E_mails << s << endl;
 	cout << endl;
 }
 
@@ -779,56 +969,58 @@ void FileHandling::StoreE_mails(string s)
 
 void FileHandling::StoreAdmin(Admin& obj)
 {
-	admin << "First Name : " << obj.firstName << "\nlast Name : " << obj.lastName << "\nEmail id : " << obj.email << "\nContact Number : " << obj.contactNumber << "\nID : " << obj.iD << endl;
+	admin << "First Name : " << obj.firstName << "\nlast Name : " << obj.lastName << "\nEmail id : " << obj.email << "\nContact Number : " << obj.contactNumber << "\nID : " << obj.ID << endl;
 }
 
 
 
 void FileHandling::StoreSuperAdmin(SuperAdmin& obj)
 {
-	s_Admin << "First Name : " << obj.firstName << "\nlast Name : " << obj.lastName << "\nEmail id : " << obj.email << "\nContact Number : " << obj.contactNumber << "\nID : " << obj.iD << endl;
+	s_Admin.close();
+	s_Admin.open("Super Admin.txt", ios::out);
+	s_Admin << "First Name : " << obj.firstName << "\nlast Name : " << obj.lastName << "\nEmail id : " << obj.email << "\nContact Number : " << obj.contactNumber << "\nID : " << obj.ID << endl;
 }
 
 
 
 void FileHandling::StoreManufacturer(Manufacturer& obj)
 {
-	manuFacturer << "First Name : " << obj.firstName << "\nlast Name : " << obj.lastName << "\nEmail id : " << obj.email << "\nContact Number : " << obj.contactNumber << "\nID : " << obj.iD << endl;
+	manuFacturer << "First Name : " << obj.firstName << "\nlast Name : " << obj.lastName << "\nEmail id : " << obj.email << "\nContact Number : " << obj.contactNumber << "\nID : " << obj.ID << endl;
 }
 
 
 
 void FileHandling::StoreVendor(Vendor& obj)
 {
-	vendor << "First Name : " << obj.firstName << "\nlast Name : " << obj.lastName << "\nEmail id : " << obj.email << "\nContact Number : " << obj.contactNumber << "\nID : " << obj.iD << endl;
+	vendor << "First Name : " << obj.firstName << "\nlast Name : " << obj.lastName << "\nEmail id : " << obj.email << "\nContact Number : " << obj.contactNumber << "\nID : " << obj.ID << endl;
 }
 
 
 
 void FileHandling::StoreSupplier(Supplier& obj)
 {
-	supplier << "First Name : " << obj.firstName << "\nlast Name : " << obj.lastName << "\nEmail id : " << obj.email << "\nContact Number : " << obj.contactNumber << "\nID : " << obj.iD << endl;
+	supplier << "First Name : " << obj.firstName << "\nlast Name : " << obj.lastName << "\nEmail id : " << obj.email << "\nContact Number : " << obj.contactNumber << "\nID : " << obj.ID << endl;
 }
 
 
 
 void FileHandling::StoreDoctor(Doctor& obj)
 {
-	doctor << "First Name : " << obj.firstName << "\nlast Name : " << obj.lastName << "\nEmail id : " << obj.email << "\nContact Number : " << obj.contactNumber << "\nID : " << obj.iD << "Duty Days : " << obj.duty_days << endl;
+	doctor << "First Name : " << obj.firstName << "\nlast Name : " << obj.lastName << "\nEmail id : " << obj.email << "\nContact Number : " << obj.contactNumber << "\nID : " << obj.ID << "Duty Days : " << obj.Duty_days << endl;
 }
 
 
 
 void FileHandling::StoreFDO(FDO& obj)
 {
-	fDOs << "First Name : " << obj.Person::firstName << "\nlast Name : " << obj.Person::lastName << "\nEmail id : " << obj.Person::email << "\nContact Number : " << obj.Person::contactNumber << "\nID : " << obj.Person::iD << endl;
+	fDOs << "First Name : " << obj.Person::firstName << "\nlast Name : " << obj.Person::lastName << "\nEmail id : " << obj.Person::email << "\nContact Number : " << obj.Person::contactNumber << "\nID : " << obj.Person::ID << endl;
 }
 
 
 
 void FileHandling::StoreMD_Doctor(MD_Doctor& obj)
 {
-	md_doctor << "First Name : " << obj.Person::firstName << "\nlast Name : " << obj.Person::lastName << "\nEmail id : " << obj.Person::email << "\nContact Number : " << obj.Person::contactNumber << "\nID : " << obj.Person::iD << endl;
+	md_doctor << "First Name : " << obj.Person::firstName << "\nlast Name : " << obj.Person::lastName << "\nEmail id : " << obj.Person::email << "\nContact Number : " << obj.Person::contactNumber << "\nID : " << obj.Person::ID << endl;
 }
 
 
@@ -840,11 +1032,11 @@ void FileHandling::StoreCitizen(Citizen& obj)
 	{
 		obj.pass[i] = obj.pass[i] + 3; //the key for encryption is 3 that is added to ASCII value
 	}
-	citizen << "\nName : " << obj.firstName << " " << obj.lastName << "\nAge : " << obj.age << "\nEmail id : " << obj.email << "\nPassword : " << obj.pass << "\nContact Number : " << obj.contactNumber << "\nCnic : " << obj.cNIC << "\nBlood Type : " << obj.bloodType << "\nCity : " << obj.city << "\nState : " << obj.state << "\nAddress : " << obj.address << "\nDate of birth : " << obj.dob << "\nEligibility check : " << obj.eligibilityCheck;
+	citizen << "\nName : " << obj.firstName << " " << obj.lastName << "\nAge : " << obj.age << "\nEmail id : " << obj.email << "\nPassword : " << obj.pass << "\nContact Number : " << obj.contactNumber << "\nCnic : " << obj.CNIC << "\nBlood Type : " << obj.bloodType << "\nCity : " << obj.city << "\nState : " << obj.state << "\nAddress : " << obj.address << "\nDate of birth : " << obj.dob << "\nEligibility check : " << obj.eligibilityCheck;
 	citizen << "\nRecord of Stats : \n";
 	citizen << "Blood Pressure : " << obj.systolic_Pressure << " / " << obj.dystolic_Pressure << "\nOxygen Level : " << obj.o_Level << "\nGlucose Level : " << obj.g_Level << endl;
 	//this is how to decrypt it
-	for (int i = 0; (i < 100 && obj.pass[i] != '\0'); i++)
+	for (int i = 0; obj.pass[i] != '\0'; i++)
 	{
 		obj.pass[i] = obj.pass[i] - 3; //the key for encryption is 3 that is subtracted to ASCII value
 	}
@@ -854,26 +1046,26 @@ void FileHandling::StoreCitizen(Citizen& obj)
 
 void FileHandling::StoreVaccineData(Vaccines& obj)
 {
-	vaccinesTypes << "Vac Type : " << obj.vacType << "\nVac Name : " << obj.vacName << "\nVac id : " << obj.vacID << "\nNumber of Doses : " << obj.numberOfDoses << "\nPrice : " << obj.price << "\nBatch ID : " << obj.batchID << "\nVacBatchID : " << obj.batchVacID << endl;
+	vaccinesTypes << "Vac Type : " << obj.vacType << "\nVac Name : " << obj.vacName << "\nVac id : " << obj.vacID << "\nNumber of Doses : " << obj.NumberOfDoses << "\nPrice : " << obj.price << "\nBatch ID : " << obj.BatchID << "\nVacBatchID : " << obj.BatchVacID << endl;
 }
 
 
 
 void FileHandling::StoreVaccinationCentres(VaccinationCentres& obj)
 {
-
+	vaccinationCenteres << "City : " << obj.City << "\nCompany : " << obj.Company << "\nPopulation of city : " << obj.population << "\nNumber of centeres : " << obj.numberOfcenters << "\nBatch ID : " << obj.VaccineID << "\nExpiry Date of Batch : " << obj.day << " - " << obj.month << "-" << obj.year << endl;
 }
 
 
 
 void FileHandling::StoreWarehouses(Warehouses& obj)
 {
-	w_houses << "Name of WareHouse : " << obj.name << "\nLocation : " << obj.latti << " degree " << obj.lat << "and " << obj.longi << " degree " << obj.lon << endl;
-	w_houses << "Capacity : " << obj.capacity << "\nSupplier ID : " << obj.supplierID << "\n";
+	w_houses << "Name of WareHouse : " << obj.name << "\nLocation : " << obj.latti << " degree " << obj.Lat << "and " << obj.longi << " degree " << obj.Lon << endl;
+	w_houses << "Capacity : " << obj.capacity << "\nSupplier ID : " << obj.SupplierID << "\n";
 	for (int i = 0; i < obj.num; i++)
 	{
 		w_houses << "Vaccine " << i + 1 << " : ";
-		w_houses << "Vaccine Name : " << obj.vacType[i].vacName << "\nQuantity : " << obj.vac[i] << endl;
+		w_houses << "Vaccine Name : " << obj.VacType[i].vacName << "\nQuantity : " << obj.Vac[i] << endl;
 	}
 	w_houses << "Total Vaccines in WareHouse : " << obj.Total << endl;
 }
@@ -882,15 +1074,17 @@ void FileHandling::StoreWarehouses(Warehouses& obj)
 
 void FileHandling::StoreGovernmentOfficial(GovernmentOfficial& obj)
 {
-	govtOfficial << "Percentage of vaccinated people : " << obj.percentageTotalvaccinated;
-	govtOfficial << "\nPercentage of partially vaccinated people : " << obj.perPartiallyVaccinated;
-	govtOfficial << "\nPercentage of fully vaccinated people : " << obj.perFullyVaccinated;
-	govtOfficial << "\nPercentage of vaccinated people with booster dose : " << obj.perBoosterVaccinated;
-	govtOfficial << "\nTotal amount spend till now on vaccines : " << obj.amountSpentTotal;
-	govtOfficial << "Vaccines used per type : " << endl;
+	govtOfficial.close();
+	govtOfficial.open("Government Officials.txt", ios::out);
+	govtOfficial << "Percentage of vaccinated people : " << obj.PercentageTotalvaccinated;
+	govtOfficial << "\nPercentage of partially vaccinated people : " << obj.PerPartiallyVaccinated;
+	govtOfficial << "\nPercentage of fully vaccinated people : " << obj.PerFullyVaccinated;
+	govtOfficial << "\nPercentage of vaccinated people with booster dose : " << obj.PerBoosterVaccinated;
+	govtOfficial << "\nTotal amount spend till now on vaccines : " << obj.AmountSpentTotal;
+	govtOfficial << "\nVaccines used per type : " << endl;
 	for (int i = 0; i < 6; ++i)
 	{
-		cout << "For type " << i + 1 << " ( ";
+		govtOfficial << "For type " << i + 1 << " ( ";
 		if (i == 0)
 		{
 			govtOfficial << "Pfizer-BioNTech ) : ";
@@ -917,17 +1111,25 @@ void FileHandling::StoreGovernmentOfficial(GovernmentOfficial& obj)
 		}
 		govtOfficial << obj.vacUsed_perType[i] << endl;
 	}
+	govtData.close();
+	govtData.open("Govt Record.txt", ios::out);
+	govtData << obj.PercentageTotalvaccinated << endl << obj.PerPartiallyVaccinated << endl << obj.PerFullyVaccinated << endl << obj.PerBoosterVaccinated << endl << obj.AmountSpentTotal << endl;
+	for (int i = 0; i < 6; ++i)
+	{
+		govtData << obj.vacUsed_perType[i] << endl;
+	}
 }
 
 
 
 FileHandling::~FileHandling()
 {
-	cNICs.close();
-	iDs.close();
-	e_mails.close();
+	CNICs.close();
+	IDs.close();
+	E_mails.close();
 	admin.close();
 	s_Admin.close();
+	pass.close();
 	manuFacturer.close();
 	supplier.close();
 	vendor.close();
@@ -938,6 +1140,7 @@ FileHandling::~FileHandling()
 	vaccinesTypes.close();
 	vaccinationCenteres.close();
 	govtOfficial.close();
+	govtData.close();
 	w_houses.close();
 	vacData.close();
 }
