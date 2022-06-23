@@ -6,12 +6,13 @@
 #include<fstream>
 using namespace std;
 
-
 //--------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------CLASSES-----------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------
+
+class FileHandling;              //------------------------Forward Declaration-----------------------------
 
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -24,9 +25,8 @@ class Person
 {
 	friend class FileHandling;
 protected:
-	char firstName[30], lastName[30];
-	string email, contactNumber;
-	int iD;
+	string firstName, lastName, email, contactNumber;
+	int ID;
 public:
 	virtual void Set();
 };
@@ -53,13 +53,20 @@ public:
 //-----------------------------------------------------ADMIN----------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------
 
-
-
+//260 admin
+//514--WAREHOUSE IMPLEMENTATION
 class Admin : public Person
 {
 	friend class FileHandling;
+	friend class Vaccines;
+	friend class Supplier;
+	friend class Warehouses;
+	Vaccines* vaccines;
+	Supplier* suppliers;
+	char* vac_stat;
 public:
 	void Set();
+	void Vac();
 };
 
 
@@ -123,13 +130,13 @@ class Citizen : public Person
 	friend class FileHandling;
 protected:
 	int systolic_Pressure, dystolic_Pressure, o_Level, g_Level, allergy, age;
-	string bloodType, city, state, dob;
-	char address[100];
-	string cNIC, pass;
+	string bloodType, city, state, address, dob;
+	string CNIC, pass;
 	bool eligibilityCheck;
 	int numberofDosesTaken;
 public:
 	void SignUp_Citizen();
+	bool SignIn();
 };
 
 
@@ -162,7 +169,7 @@ class Vaccines : public Supplier
 	friend class FileHandling;
 protected:
 	string vacType, vacName;
-	int vacID, numberOfDoses, price, batchID, batchVacID;
+	int vacID, NumberOfDoses, price, BatchID, BatchVacID;
 	int quantity;
 public:
 	void setVacData();
@@ -180,16 +187,16 @@ class Warehouses : public Supplier
 {
 	friend class FileHandling;
 protected:
-	char name[30];
+	string name;
 	float longi, latti;
-	char lon, lat;
+	char Lon, Lat;
 	int capacity;
-	int supplierID;
-	Vaccines* vacType;
-	int* vac;
+	int SupplierID;
+	Vaccines* VacType;
+	int* Vac;
 	int num, Total;
 public:
-	void WareSet();
+	void WareSet(int);
 };
 
 
@@ -204,10 +211,10 @@ class VaccinationCentres : public Vaccines, public Warehouses
 {
 	friend class FileHandling;
 protected:
-	int vaccineID;
+	int VaccineID;
 	int day, month, year;
-	string company, city;
-	int amount, quantity, population, numberOfcenters;
+	string Company, City;
+	int population, numberOfcenters;
 public:
 	void setBatchData();
 };
@@ -224,14 +231,13 @@ class GovernmentOfficial : public VaccinationCentres, virtual public Warehouses
 {
 	friend class FileHandling;
 public:
-	float percentageTotalvaccinated;
-	float perPartiallyVaccinated, perFullyVaccinated, perBoosterVaccinated;
-	int amountSpentTotal;
+	float PercentageTotalvaccinated;
+	float PerPartiallyVaccinated, PerFullyVaccinated, PerBoosterVaccinated;
+	int AmountSpentTotal;
 	int vacUsed_perType[6];
-
-
 	void DisplayGraph();
 	void CalculateData();
+	void SetAllData(FileHandling&);
 };
 
 
@@ -246,7 +252,7 @@ class FDO : public MD_Doctor
 {
 	friend class FileHandling;
 protected:
-	int* counters;
+	int* Counters;
 public:
 	void Set();
 	bool check_Eligibility();
@@ -264,7 +270,7 @@ class Doctor : public Person
 {
 	friend class FileHandling;
 protected:
-	int duty_days;
+	int Duty_days;
 public:
 	void Set();
 };
@@ -294,11 +300,12 @@ class FileHandling
 	friend class GovernmentOfficial;
 	friend class FDO;
 protected:
-	fstream iDs, cNICs, e_mails, admin, s_Admin, manuFacturer, supplier, vendor, doctor, md_doctor, fDOs, citizen, vaccinesTypes, vaccinationCenteres, govtOfficial, w_houses, vacData;
+	fstream IDs, CNICs, E_mails, admin, s_Admin, manuFacturer, supplier, vendor, doctor, md_doctor, fDOs, citizen, pass, vaccinesTypes, vaccinationCenteres, govtOfficial, govtData, w_houses, vacData;
 public:
 	FileHandling();
 	void StoreCNICs(string);
 	void StoreIDs(int);
+	void StorePass(string);
 	void StoreE_mails(string);
 	void StoreDoctor(Doctor&);
 	void StoreMD_Doctor(MD_Doctor&);
@@ -315,6 +322,5 @@ public:
 	void StoreGovernmentOfficial(GovernmentOfficial&);
 	~FileHandling();
 };
-
 
 
