@@ -5,22 +5,104 @@
 #include<string>
 #include<fstream>
 using namespace std;
-
+void Menu()
+{
+	char num;
+	system("cls");
+	cout << "\t\tWelcome to our vaccination system\nPress 1 for Admin\nPress2 for Doctor\nPress3 for FDO\nPress 4 for GOVT_OFFICIAL\nPress 5 for new citizen sign up\nPress 6 for exit";
+	cin >> num;
+	while (num != '1' && num != '2' && num != '3' && num != '4' && num != '5' && num != '6')
+	{
+		cout << "Invalid input, Try Again";
+		cin >> num;
+	}
+	if (num == '1')
+	{
+		Admin admin;
+		cout << "To set admin details press 1\n To add Vaccine Press 2";
+		cin >> num;
+		while (num != '1' && num != '2')
+		{
+			cout << "Invalid input, Try Again";
+			cin >> num;
+		}
+		if (num == '1')
+		{
+			admin.Set();
+		}
+		else if (num == '2')
+		{
+			admin.Vac();
+		}
+		Menu();
+	}
+	else if (num == '2')
+	{
+		Doctor doc;
+		doc.Set();
+		Menu();
+	}
+	else if (num == '3')
+	{
+		FDO fdo;
+		fdo.Set();
+		fdo.check_Eligibility();
+		Menu();
+	}
+	else if (num == '4')
+	{
+		GovernmentOfficial G_O;
+		cout << "Press 1 to see Graph\nPress 2 to see DATA : ";
+		cin >> num;
+		while (num != '1' && num != '2')
+		{
+			cout << "Invalid input, Try Again";
+			cin >> num;
+		}
+		if (num == '1')
+		{
+			G_O.DisplayGraph();
+		}
+		else if (num == '2')
+		{
+			G_O.CalculateData();
+		}
+		Menu();
+	}
+	else if (num == '5')
+	{
+		Citizen citizen;
+		citizen.SignUp_Citizen();
+		Menu();
+	}
+	else if (num == '6')
+	{
+		exit;
+	}
+}
 
 //--------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------MAIN / DRIVER-----------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------
-
+GovernmentOfficial Govt_obj;
 
 
 int main()
 {
+	FileHandling obj;
+	Govt_obj.SetAllData(obj);
 	SuperAdmin S_A;
-	cout << "Enter the information of Super Admin : \n";
-	S_A.Set();
-	cout << "\nDisplaying the CRUD Menu : \n";
+	char num;
+	cout << "If you want to update information of super admin press 1\nTo continue press any other key : ";
+	cin >> num;
+	if (num == '1')
+	{
+		S_A.Set();
+	}
 	S_A.CRUD_Menu();
+	Menu();
+
 	system("pause");
 }
