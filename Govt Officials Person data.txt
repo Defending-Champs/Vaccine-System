@@ -1,0 +1,6 @@
+CNIC : 33222-1234567-9
+First Name : asd
+last Name : zxcv
+Email id : 21345678
+Contact Number : 12345678
+ID : 7613

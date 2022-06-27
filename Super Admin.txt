@@ -1,0 +1,6 @@
+CNIC : 33210-9836365-0
+First Name : Super
+last Name : Admin
+Email id : superadmin@govtPak.com
+Contact Number : 03214567654
+ID : 7749

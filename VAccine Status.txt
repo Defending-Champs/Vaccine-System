@@ -1,0 +1,8 @@
+CNIC of Doctor : 
+CNIC of Citizen : 33122-6543254-7
+Vaccine name : Moderna
+Number of Doses : 2
+CNIC of Doctor : 
+CNIC of Citizen : 33122-6543254-7
+Vaccine name : Pfizer-BioNTech
+Number of Doses : 2
