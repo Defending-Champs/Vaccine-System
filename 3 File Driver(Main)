@@ -31,6 +31,25 @@ int main()
 	cout << "----------------------------------------------------------------------------------------------------\n\n";
 	GovernmentOfficial Govt_obj;
 	Govt_obj.SetAllData(obj);
+	Menu();
+	Govt_obj.SetAllData(obj);
+	obj.StoreGovernmentOfficial();
+	obj.Close();
+	system("pause");
+}
+
+
+
+//--------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------MAIN MENU-------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------
+
+
+
+void Menu()
+{
 	SuperAdmin S_A;
 	char num;
 	cout << "Press 1 to update super admin\nPress 2 to login as super admin\nPress 3 to go to CRUD menu\nPress AnyOther for MainMenu\n";
@@ -74,27 +93,6 @@ int main()
 	{
 		S_A.CRUD_Menu();
 	}
-	else
-	{
-		Menu();
-	}
-	obj.Close();
-	system("pause");
-}
-
-
-
-//--------------------------------------------------------------------------------------------------------------------
-//--------------------------------------------------------------------------------------------------------------------
-//----------------------------------------------------MAIN MENU-------------------------------------------------------
-//--------------------------------------------------------------------------------------------------------------------
-//--------------------------------------------------------------------------------------------------------------------
-
-
-
-void Menu()
-{
-	char num;
 	system("cls");
 	cout << "\t\tMain Menu\n\n\tFor Login : \nPress 1 for Admin\nPress 2 for Doctor\nPress 3 for FDO\nPress 4 for GOVT_OFFICIAL\nPress 5 for Citizen\nPress 6 for exit\n";
 	cin >> num;
@@ -130,8 +128,19 @@ void Menu()
 	}
 	else if (num == '2')
 	{
+		char x;
 		Doctor doc;
 		doc.SignIn();
+		cout << "Enter 1 to vaccinate Citizen : ";
+		cin >> x;
+		if (x == '1')
+		{
+			doc.Vaccinate();
+		}
+		else
+		{
+			Menu();
+		}
 		Menu();
 	}
 	else if (num == '3')
@@ -165,23 +174,22 @@ void Menu()
 	{
 		Citizen C_obj;
 		C_obj.SignIn();
-		/*FDO FDO_obj;
+		FDO FDO_obj;
 		MD_Doctor MD_obj;
 		Doctor D_obj;
 		cout << "Sign In Citizen : \n";
-		if (C_obj.Sign_In() == true)
+		FDO_obj.Setter();
+		MD_obj.SetData();
+		if (FDO_obj.check_Eligibility() == true)
 		{
-			FDO_obj.Setter();
-			MD_obj.SetData();
-			if (FDO_obj.check_Eligibility() == true)
-			{
-				D_obj.Set();
-				D_obj.Vaccinate();
-			}
-		}*/
+			D_obj.Set();
+			D_obj.Vaccinate();
+		}
 	}
 	else if (num == '6')
 	{
 		exit;
 	}
 }
+
+
