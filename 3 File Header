@@ -13,7 +13,7 @@ using namespace std;
 //--------------------------------------------------------------------------------------------------------------------
 
 class FileHandling;              //------------------------Forward Declaration-----------------------------
-
+class VaccinationCenters;        //------------------------Forward Declaration-----------------------------
 
 //--------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------PERSON----------------------------------------------------------
@@ -200,7 +200,8 @@ protected:
 	int* Vac;
 	int num, Total;
 public:
-	void WareSet(int);
+	void WareSet();
+	void AddVacc(int);
 };
 
 
@@ -214,13 +215,19 @@ public:
 class VaccinationCentres : public Vaccines, public Warehouses
 {
 	friend class FileHandling;
+	friend class Doctor;
+	friend class FDO;
 protected:
-	int VaccineID;
+	string* Dobj;
+	string* Fobj;
+	string CentreID;
+	int VaccineID, Doc, Fdo;
 	int day, month, year;
 	string Company, City;
 	int population, numberOfcenters;
 public:
 	void setBatchData();
+	void SetDocFdo();
 };
 
 
@@ -256,6 +263,7 @@ public:
 
 class FDO : public MD_Doctor
 {
+	friend class VaccinationCenters;
 	friend class FileHandling;
 protected:
 	int* Counters;
@@ -276,12 +284,16 @@ public:
 
 class Doctor : public Person
 {
+	friend class VaccinationCenters;
 	friend class FileHandling;
 protected:
 	int Duty_days;
+	string vaccineName;
+	char dose;
 public:
-	void Set();
 	void Vaccinate();
+	void Set();
+	void Vaccinate(string&);
 	void SignIn();
 };
 
@@ -309,13 +321,13 @@ class FileHandling
 	friend class VaccinationCenters;
 	friend class GovernmentOfficial;
 	friend class FDO;
-protected:
-	fstream IDs, CNICs, E_mails, admin, s_Admin, manuFacturer, supplier, vendor, doctor, md_doctor, fDOs, citizen, Email_Pass, vaccinesTypes, vaccinationCenteres, govtOfficial, govtData, govtPdata, w_houses, vacData, citizen_update;
 public:
+	fstream IDs, CNICs, E_mails, admin, s_Admin, manuFacturer, supplier, vendor, doctor, vaccineSTatus, md_doctor, fDOs, citizen, Email_Pass, vaccinesTypes, vaccinationCenteres, govtOfficial, VacDocFDO, govtData, govtPdata, w_houses, vacData, citizen_update;
 	void Open();
 	void StoreCNICs(string);
 	void VaccineAdd(string s);
 	void StoreIDs(int);
+	void storeDocFDO(VaccinationCentres&);
 	void StoreE_mails(string);
 	void StoreDoctor(Doctor&);
 	void StoreMD_Doctor(MD_Doctor&);
@@ -334,3 +346,5 @@ public:
 	void StoreGovernmentOfficial();
 	void Close();
 };
+
+
